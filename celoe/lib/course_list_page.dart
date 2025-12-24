@@ -1,28 +1,6 @@
+import 'package:celoe/models/course.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-// Mock Data Model (The "Backend" part)
-class Course {
-  final String title;
-  final String description;
-  final String image;
-  final String status; // 'in_progress', 'not_started', 'completed'
-  final double? progress;
-  final String? progressText;
-  final String? duration;
-  final String? completedDate;
-
-  Course({
-    required this.title,
-    required this.description,
-    required this.image,
-    required this.status,
-    this.progress,
-    this.progressText,
-    this.duration,
-    this.completedDate,
-  });
-}
 
 class CourseListPage extends StatefulWidget {
   const CourseListPage({super.key});
@@ -32,48 +10,16 @@ class CourseListPage extends StatefulWidget {
 }
 
 class _CourseListPageState extends State<CourseListPage> {
-  // Mock Data
-  final List<Course> courses = [
-    Course(
-      title: 'Dasar Pemrograman Python',
-      description: 'Pelajari sintaks dasar, variabel, dan logika pemrograman modern.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBXPyAZjLdKIXEiDEX6-8ut4wa3r7rks2aryvBzEpovhuYnX-AQWWeG8BcpW0UBnuAdlGOjX-DG3YFFdjO6QgGxGJ6B036zlsVCY4Q9AC2k8Krm1o4nnBF_0MKFswfsKbypejk6YiuXCnVG1jCY8Qzn6vNjovkLT-DRUPinKs7vVNU-vHEy2NnLdhhqhqZinjdQEmMXkTDfA7wOLEZ1DtSIP68oOAiUVxrIA4E9SfpETEYnpxU4M0hikSPLjvvr81ubWmxlp3S5JPY',
-      status: 'in_progress',
-      progress: 0.45,
-      progressText: 'Modul 3/8',
-    ),
-    Course(
-      title: 'Desain UI/UX Mobile App',
-      description: 'Mastering Figma dan prinsip desain antarmuka pengguna.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBOgt2U46FZUV2kYOScYjNv5xMER9ao2PElZZp6p701ByG_BJraYnlfGA6yW0TvTq59qLLVIHPjY7IQ4D1eA7GQttUJX24qZRBxf_QZeZZHPxvaHy58qslMdEGje03GV23HAD1qL19OoFcyCkyA0OA33e6iMi3shMbpBmrIgD3-pQGTE_0UJDTMAWJW4fKYFQnRclCqT-H6T3M5ODNAq31c4pmtOArNvIOCwwo9PKmh2KC6h-8DQNH-dxeFEt8JblY_wWjXEMnPfBs',
-      status: 'not_started',
-      duration: '4j 30m',
-    ),
-    Course(
-      title: 'Agile Project Management',
-      description: 'Metodologi scrum dan manajemen tim yang efektif.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDUwlXNMfTWY30yYHjKChPRDGCw_FEsjeJalqoHsXmURaafYns96JSczb6NQQswBXwaSN5HWD6olAlgbda1UdKDqlrXmHXCfMmMrwusJxzgMDrXGMiO38V2gC3BCdMT3enRfglNg_sTioXWTt6EHPzKIlAP_doAyBTGp9Wn7uVvcXIdReVuiaBhk_lFFgL4CHlDzknPVRSlbh8AGi7y29zkRzSEo20iYmyu_lscdtr-BnbQHlndJcqdsewcFdJs29OJbPGk6arrAok',
-      status: 'in_progress',
-      progress: 0.90,
-      progressText: 'Final Quiz',
-    ),
-    Course(
-      title: 'Data Science Intro',
-      description: 'Pengenalan Big Data dan analisis statistik dasar.',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDykKPgjT8W4Y1LhREc0I7gSRe5dF0sUxl9YSh1xhmPCY8QbMzARfR1wauIQT3Sy0-ph1Y01UNdRXLmsQB5Qj-1EfcEKfySxSxdgxRlAgTTbhsJQ6zmXwQ93L_ChwfPnkd_VhHWTTN62-FU6WmElxzo-9QlXBNJV_YczhXrr4X9NnLODpWAeOCzthGhn80ccsdScW5G1fpIHNWr2ADhaGAXC4gHthxXxLxkQ_w5vzHl35nopljX0sN1NbYK3OUdxL9PpdaSaDc4Urk',
-      status: 'completed',
-      completedDate: '12 Okt 2023',
-    ),
-  ];
-
   String _selectedFilter = 'Semua';
 
   List<Course> get filteredCourses {
-    if (_selectedFilter == 'Semua') return courses;
-    if (_selectedFilter == 'Sedang Berjalan') return courses.where((c) => c.status == 'in_progress').toList();
-    if (_selectedFilter == 'Belum Dimulai') return courses.where((c) => c.status == 'not_started').toList();
-    if (_selectedFilter == 'Selesai') return courses.where((c) => c.status == 'completed').toList();
-    return courses;
+    if (_selectedFilter == 'Semua') {
+      return mockCourses.where((c) => c.status != 'recommended').toList();
+    }
+    if (_selectedFilter == 'Sedang Berjalan') return mockCourses.where((c) => c.status == 'in_progress').toList();
+    if (_selectedFilter == 'Belum Dimulai') return mockCourses.where((c) => c.status == 'not_started').toList();
+    if (_selectedFilter == 'Selesai') return mockCourses.where((c) => c.status == 'completed').toList();
+    return [];
   }
 
   @override
