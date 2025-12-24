@@ -1,3 +1,4 @@
+import 'package:celoe/course_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -296,10 +297,15 @@ class HomePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildNavItem(Icons.home, 'Beranda', true),
-                    _buildNavItem(Icons.search, 'Jelajah', false),
-                    _buildNavItem(Icons.menu_book, 'Kursusku', false),
-                    _buildNavItem(Icons.person, 'Profil', false),
+                    _buildNavItem(Icons.home, 'Beranda', true, () {}),
+                    _buildNavItem(Icons.search, 'Jelajah', false, () {}),
+                    _buildNavItem(Icons.menu_book, 'Kursusku', false, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const CourseListPage()),
+                      );
+                    }),
+                    _buildNavItem(Icons.person, 'Profil', false, () {}),
                   ],
                 ),
               ),
@@ -310,24 +316,27 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isActive) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          color: isActive ? const Color(0xFF137FEC) : const Color(0xFF64748B),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: GoogleFonts.lexend(
-            fontSize: 10,
+  Widget _buildNavItem(IconData icon, String label, bool isActive, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
             color: isActive ? const Color(0xFF137FEC) : const Color(0xFF64748B),
-            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
           ),
-        ),
-      ],
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: GoogleFonts.lexend(
+              fontSize: 10,
+              color: isActive ? const Color(0xFF137FEC) : const Color(0xFF64748B),
+              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
