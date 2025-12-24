@@ -1,3 +1,5 @@
+import 'package:celoe/course_detail_page.dart';
+import 'package:celoe/lesson_page.dart';
 import 'package:celoe/models/course.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -194,167 +196,179 @@ class _CourseListPageState extends State<CourseListPage> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 96,
-                height: 96,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    image: NetworkImage(course.image),
-                    fit: BoxFit.cover,
-                  ),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+               builder: (context) => CourseDetailPage(course: course),
+            ),
+          );
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 96,
+              height: 96,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  image: NetworkImage(course.image),
+                  fit: BoxFit.cover,
                 ),
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          course.title,
+                          style: GoogleFonts.lexend(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF0F172A),
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const Icon(Icons.more_vert, color: Color(0xFF94A3B8)),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    course.description,
+                    style: GoogleFonts.lexend(
+                      fontSize: 12,
+                      color: const Color(0xFF64748B),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (course.status == 'completed') ...[
+                     const SizedBox(height: 8),
+                     Row(
+                       children: [
+                         Container(
+                           padding: const EdgeInsets.all(2),
+                           decoration: BoxDecoration(
+                             color: const Color(0xFF22C55E).withOpacity(0.1),
+                             shape: BoxShape.circle,
+                           ),
+                           child: const Icon(Icons.check, size: 14, color: Color(0xFF22C55E)),
+                         ),
+                       ],
+                     ),
+                  ],
+                  if (course.status == 'in_progress') ...[
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Text(
-                            course.title,
-                            style: GoogleFonts.lexend(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF0F172A),
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        Text(
+                          '${(course.progress! * 100).toInt()}% Selesai',
+                          style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w500, color: const Color(0xFF64748B)),
                         ),
-                        const Icon(Icons.more_vert, color: Color(0xFF94A3B8)),
+                        Text(
+                          course.progressText!,
+                          style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w600, color: const Color(0xFF137FEC)),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      course.description,
-                      style: GoogleFonts.lexend(
-                        fontSize: 12,
-                        color: const Color(0xFF64748B),
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (course.status == 'completed') ...[
-                       const SizedBox(height: 8),
-                       Row(
-                         children: [
-                           Container(
-                             padding: const EdgeInsets.all(2),
-                             decoration: BoxDecoration(
-                               color: const Color(0xFF22C55E).withOpacity(0.1),
-                               shape: BoxShape.circle,
-                             ),
-                             child: const Icon(Icons.check, size: 14, color: Color(0xFF22C55E)),
-                           ),
-                         ],
-                       ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
-          
-          if (course.status == 'in_progress') ...[
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${(course.progress! * 100).toInt()}% Selesai',
-                  style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w500, color: const Color(0xFF64748B)),
-                ),
-                Text(
-                  course.progressText!,
-                  style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w600, color: const Color(0xFF137FEC)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            LinearProgressIndicator(
-              value: course.progress,
-              backgroundColor: const Color(0xFFF1F5F9),
-              color: const Color(0xFF137FEC),
-              minHeight: 8,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF137FEC),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-                child: Text('Lanjutkan Belajar', style: GoogleFonts.lexend(fontWeight: FontWeight.w600)),
-              ),
-            ),
-          ] else if (course.status == 'not_started') ...[
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(Icons.schedule, size: 16, color: const Color(0xFF64748B)),
-                const SizedBox(width: 4),
-                Text(
-                  course.duration!,
-                  style: GoogleFonts.lexend(fontSize: 12, color: const Color(0xFF64748B)),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
+                    const SizedBox(height: 8),
+                    LinearProgressIndicator(
+                      value: course.progress,
                       backgroundColor: const Color(0xFFF1F5F9),
-                      foregroundColor: const Color(0xFF0F172A),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      padding: const EdgeInsets.symmetric(vertical: 8), 
+                      color: const Color(0xFF137FEC),
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text('Mulai Kelas', style: GoogleFonts.lexend(fontWeight: FontWeight.w600)),
-                  ),
-                ),
-              ],
-            ),
-          ] else if (course.status == 'completed') ...[
-            const SizedBox(height: 12),
-            const Divider(color: Color(0xFFF1F5F9)),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Selesai ${course.completedDate}',
-                  style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w500, color: const Color(0xFF22C55E)),
-                ),
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.download, size: 16),
-                  label: const Text('Sertifikat'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFF137FEC),
-                    textStyle: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w600),
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                ),
-              ],
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LessonPage(course: course),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF137FEC),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        child: Text('Lanjutkan Belajar', style: GoogleFonts.lexend(fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ] else if (course.status == 'not_started') ...[
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Icon(Icons.schedule, size: 16, color: const Color(0xFF64748B)),
+                        const SizedBox(width: 4),
+                        Text(
+                          course.duration!,
+                          style: GoogleFonts.lexend(fontSize: 12, color: const Color(0xFF64748B)),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFF1F5F9),
+                              foregroundColor: const Color(0xFF0F172A),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              padding: const EdgeInsets.symmetric(vertical: 8), 
+                            ),
+                            child: Text('Mulai Kelas', style: GoogleFonts.lexend(fontWeight: FontWeight.w600)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ] else if (course.status == 'completed') ...[
+                    const SizedBox(height: 12),
+                    const Divider(color: Color(0xFFF1F5F9)),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Selesai ${course.completedDate}',
+                          style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w500, color: const Color(0xFF22C55E)),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.download, size: 16),
+                          label: const Text('Sertifikat'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF137FEC),
+                            textStyle: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w600),
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
             ),
           ],
-        ],
+        ),
       ),
     );
   }
