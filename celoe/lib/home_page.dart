@@ -1,6 +1,7 @@
 import 'package:celoe/course_list_page.dart';
 import 'package:celoe/course_detail_page.dart';
 import 'package:celoe/lesson_page.dart'; // import LessonPage
+import 'package:celoe/profile_settings_page.dart';
 import 'package:celoe/models/course.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -296,7 +297,12 @@ class HomePage extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => const CourseListPage()),
                       );
                     }),
-                    _buildNavItem(Icons.person, 'Profil', false, () => _showSnackBar(context, 'Menu Profil')),
+                    _buildNavItem(Icons.person, 'Profil', false, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ProfileSettingsPage()),
+                      );
+                    }),
                   ],
                 ),
               ),
